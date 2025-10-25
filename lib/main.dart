@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:lms/screens/upload_note.dart';
 import 'auth_screen.dart';
 import 'firebase_options.dart';
 import 'screens/home_screen.dart';
 import 'screens/notes_screen.dart';
 import 'screens/opportunities_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/add_opportunity_screen.dart'; 
+
+
+import 'package:supabase_flutter/supabase_flutter.dart' hide User;
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+    await Supabase.initialize(
+      url: 'https://emvwvjxtfoshvbdnzkfx.supabase.co',
+      anonKey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVtdnd2anh0Zm9zaHZiZG56a2Z4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTI2ODI0ODIsImV4cCI6MjA2ODI1ODQ4Mn0._-_56yBz3I6xjUAX7hsW2VfpafneqjeD3wNTk7oBdWQ',
+    );
+
     runApp(const CollegeNotesApp());
   } catch (e) {
     print("Firebase Init Error: $e");
@@ -60,10 +71,10 @@ class MainScreen extends StatefulWidget {
   State createState() => _MainScreenState();
 }
 
-class _MainScreenState extends State {
+class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
-  final List _screens = [
+  final List<Widget> _screens = [
     const HomeScreen(),
     const NotesScreen(),
     const OpportunitiesScreen(),
@@ -93,12 +104,12 @@ class _MainScreenState extends State {
             label: 'Notes',
           ),
           NavigationDestination(
-            icon: Icon(Icons.work_outline),
+            icon: Icon(Icons.work_outlined),
             selectedIcon: Icon(Icons.work),
             label: 'Opportunities',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person_outline),
+            icon: Icon(Icons.person_outlined),
             selectedIcon: Icon(Icons.person),
             label: 'Profile',
           ),
@@ -117,19 +128,26 @@ class _MainScreenState extends State {
   }
 
   void _showAddDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(_selectedIndex == 1 ? 'Add New Note' : 'Add New Opportunity'),
-        content: const Text('Feature will be implemented with backend integration.'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('OK'),
-          ),
-        ],
-      ),
-    );
+    if (_selectedIndex == 1) {
+      // Navigate to UploadNotePage
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const UploadNoteScreen()),
+      );
+    } else if (_selectedIndex == 2) {
+      // Navigate to AddOpportunityScreen
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const AddOpportunityScreen()),
+      ).then((_) {
+        // Refresh the opportunities screen when returning
+        // This will trigger a refresh if the opportunities screen is active
+        if (mounted && _selectedIndex == 2) {
+          // You might want to implement a refresh mechanism in OpportunitiesScreen
+          // For now, we'll just set state to potentially trigger a rebuild
+          setState(() {});
+        }
+      });
+    }
   }
 }
-

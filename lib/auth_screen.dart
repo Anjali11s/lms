@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
 
 class AuthScreen extends StatefulWidget {
   const AuthScreen({super.key});
@@ -33,18 +33,19 @@ class _AuthScreenState extends State<AuthScreen> {
     });
 
     try {
+      final email = _emailController.text.trim();
+      final password = _passwordController.text.trim();
+
       if (_isLogin) {
-        await FirebaseAuth.instance.signInWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
+        await firebase_auth.FirebaseAuth.instance
+            .signInWithEmailAndPassword(email: email, password: password);
       } else {
-        await FirebaseAuth.instance.createUserWithEmailAndPassword(
-          email: _emailController.text.trim(),
-          password: _passwordController.text.trim(),
-        );
+        await firebase_auth.FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
       }
-    } on FirebaseAuthException catch (e) {
+
+      // No Supabase sign-in is needed. Firebase handles auth.
+    } on firebase_auth.FirebaseAuthException catch (e) {
       setState(() {
         _errorMessage = _getErrorMessage(e);
       });
@@ -61,7 +62,7 @@ class _AuthScreenState extends State<AuthScreen> {
     }
   }
 
-  String _getErrorMessage(FirebaseAuthException e) {
+  String _getErrorMessage(firebase_auth.FirebaseAuthException e) {
     switch (e.code) {
       case 'invalid-email':
         return 'Please enter a valid email address.';
@@ -92,7 +93,8 @@ class _AuthScreenState extends State<AuthScreen> {
     }
 
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      await firebase_auth.FirebaseAuth.instance
+          .sendPasswordResetEmail(email: email);
       if (!mounted) return;
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -100,7 +102,7 @@ class _AuthScreenState extends State<AuthScreen> {
           duration: Duration(seconds: 4),
         ),
       );
-    } on FirebaseAuthException catch (e) {
+    } on firebase_auth.FirebaseAuthException catch (e) {
       setState(() {
         _errorMessage = _getErrorMessage(e);
       });
@@ -153,7 +155,9 @@ class _AuthScreenState extends State<AuthScreen> {
                   prefixIcon: const Icon(Icons.lock),
                   suffixIcon: IconButton(
                     icon: Icon(
-                      _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                     ),
                     onPressed: () {
                       setState(() {
