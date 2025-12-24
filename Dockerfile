@@ -1,9 +1,9 @@
-    FROM cirrusci/flutter:stable
+FROM ghcr.io/cirruslabs/flutter:3.22.0
 
-    WORKDIR /app
-    COPY . .
+WORKDIR /app
+COPY . .
 
-    RUN flutter pub get
-    RUN flutter build web
+RUN flutter pub get
+RUN flutter build web
 
-    CMD ["bash"]
+CMD ["bash"]
