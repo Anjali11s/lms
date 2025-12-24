@@ -126,7 +126,7 @@ print('Author Name: $authorName');
 
 // print('Supabase session: ${Supabase.instance.client.auth.session()}');
 
-      final insertResponse = await supabase.from('notes').insert({
+  final insertResponse = await supabase.from('notes').insert({
   'title': title,
   'subject': subject,
   'file_url': fileUrl,
