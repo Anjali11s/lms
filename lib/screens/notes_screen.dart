@@ -26,6 +26,9 @@ class _NotesScreenState extends State<NotesScreen> {
     'Biology',
     'Computer Science',
     'Economics'
+    'History',
+    'Geography',
+    
   ];
   
   final ScrollController _scrollController = ScrollController();
