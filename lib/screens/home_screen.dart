@@ -10,6 +10,8 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
+// Conflict demo: adding this line to show merge conflict resolution 
+
 class _HomeScreenState extends State<HomeScreen> {
   final supabase = Supabase.instance.client;
   
