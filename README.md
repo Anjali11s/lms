@@ -166,32 +166,32 @@ Flutter web running locally on Docker at `http://localhost:8080/`.
 
 📚 Learning Outcomes
 
-Forking & cloning repositories
+- Forking & cloning repositories
 
-Working with multiple branches
+- Working with multiple branches
 
-Clean merging strategies
+- Clean merging strategies
 
-Merge conflict handling
+- Merge conflict handling
 
-Docker usage with Flutter Web
+- Docker usage with Flutter Web
 
-Firebase Hosting deployment
+- Firebase Hosting deployment
 
-👩‍💻 Author
+## 👩‍💻 Author
 
-Anjali Singh
-Department of Computer Science & Engineering
+### Anjali Singh
+(Department of Computer Science & Engineering)
 
-🔗 Project Links
+### 🔗 Project Links
 
-GitHub Repository:
+### GitHub Repository:
 https://github.com/Anjali11s/lms
 
-Live Demo:
+### Live Demo:
 https://lms-web-5096a.web.app/
 
-📄 License
+#### 📄 License
 
 Developed for academic and educational purposes.
 
