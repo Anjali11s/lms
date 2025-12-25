@@ -1,9 +1,18 @@
-FROM ghcr.io/cirruslabs/flutter:3.22.0
+# Dockerfile for building and serving a Flutter web application
+
+# ---------- Build Stage ----------
+FROM cirrusci/flutter:stable AS build
 
 WORKDIR /app
 COPY . .
 
 RUN flutter pub get
-RUN flutter build web
+RUN flutter build web --release
 
-CMD ["bash"]
+# ---------- Run Stage ----------
+FROM nginx:alpine
+
+COPY --from=build /app/build/web /usr/share/nginx/html
+
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]
